@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import { Dish as DishEntity } from "./entities/dish.entity"
-import { DishIngredient as DishIngredientEntity } from "./entities/dish-ingredients.entity"
+import { DishIngredient as DishIngredientEntity } from "./entities/dish-ingredient.entity"
 import { CreateDishtDto } from "./dto/create-dish.dto"
 
 @Injectable()

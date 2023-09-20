@@ -1,6 +1,6 @@
 import { maxNameLength } from "../../contants"
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm"
-import { DishIngredient } from "src/modules/dishes/entities/dish-ingredients.entity"
+import { DishIngredient } from "src/modules/dishes/entities/dish-ingredient.entity"
 
 @Entity("ingredients")
 export class Ingredient {

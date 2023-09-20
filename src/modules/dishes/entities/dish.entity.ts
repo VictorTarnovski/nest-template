@@ -1,6 +1,7 @@
 import { maxNameLength } from "../../contants"
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm"
-import { DishIngredient } from "./dish-ingredients.entity"
+import { DishIngredient } from "./dish-ingredient.entity"
+import { OrderDish } from "../../orders/entities/order-dish.entity"
 
 @Entity("dishes")
 export class Dish {
@@ -15,4 +16,7 @@ export class Dish {
 
   @OneToMany(() => DishIngredient, (dishIngredient) => dishIngredient.dish)
   dishIngredients: DishIngredient[]
+
+  @OneToMany(() => OrderDish, (orderDish) => orderDish.dish)
+  orderDishes: OrderDish[]
 }

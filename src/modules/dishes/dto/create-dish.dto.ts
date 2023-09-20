@@ -6,12 +6,18 @@ import {
   IsNumber,
   IsArray,
   ValidateNested,
+  IsUUID,
 } from "class-validator"
 import { Type } from "class-transformer"
 import { minNameLength, maxNameLength } from "../../contants"
 
 class DishIngredient {
+  @IsNotEmpty()
+  @IsString()
+  @IsUUID()
   ingredientId: string
+
+  @IsNumber()
   quantityPerDish: number
 }
 

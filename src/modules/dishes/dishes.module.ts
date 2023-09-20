@@ -4,7 +4,7 @@ import { DishesController } from "./dishes.controller"
 import { DishesService } from "./dishes.service"
 import { Dish } from "./entities/dish.entity"
 import { IngredientsModule } from "../ingredients/ingredients.module"
-import { DishIngredient } from "./entities/dish-ingredients.entity"
+import { DishIngredient } from "./entities/dish-ingredient.entity"
 
 @Module({
   imports: [
