@@ -1,21 +1,18 @@
-import {
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from "@nestjs/websockets"
-import { Server, Socket } from "socket.io"
+import { WebSocketGateway, WebSocketServer } from "@nestjs/websockets"
+import { Server } from "socket.io"
+
+export const Resources = {
+  ingredient: "ingredient",
+  dish: "dish",
+  table: "order",
+  order: "order",
+}
 
 @WebSocketGateway({ namespace: "events" })
 export class EventsGateway {
   @WebSocketServer()
   server: Server
-
-  @SubscribeMessage("message")
-  handleMessage(client: any, payload: any): string {
-    return "Hello world!"
-  }
-
-  sendMessage() {
-    this.server.emit("newMessage", "hello world from the server")
+  sendNewResourceMessage<T>(resourceName: keyof typeof Resources, resource: T) {
+    this.server.emit(`new@${resourceName}`, resource)
   }
 }

@@ -70,12 +70,8 @@ export class OrderController {
     @Param("id") id: string,
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
-    const order = await this.orderService.findOne(id)
-    if (!order) {
-      throw new NotFoundException(`Could not find Order: ${id}`)
-    } else {
-      return this.orderService.update(id, updateOrderDto)
-    }
+    await this.orderService.findOne(id)
+    return this.orderService.update(id, updateOrderDto)
   }
 
   @Delete(":id")

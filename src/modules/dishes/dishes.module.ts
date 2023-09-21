@@ -5,12 +5,13 @@ import { DishesService } from "./dishes.service"
 import { Dish } from "./entities/dish.entity"
 import { IngredientsModule } from "../ingredients/ingredients.module"
 import { DishIngredient } from "./entities/dish-ingredient.entity"
+import { EventsModule } from "../events/events.module"
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Dish]),
-    TypeOrmModule.forFeature([DishIngredient]),
+    TypeOrmModule.forFeature([Dish, DishIngredient]),
     IngredientsModule,
+    EventsModule,
   ],
   controllers: [DishesController],
   providers: [DishesService],

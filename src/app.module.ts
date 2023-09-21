@@ -12,7 +12,7 @@ import { Table } from "./modules/tables/entities/table.entity"
 import { OrderModule } from "./modules/orders/order.module"
 import { Order } from "./modules/orders/entities/order.entity"
 import { OrderDish } from "./modules/orders/entities/order-dish.entity"
-import { EventsModule } from "./events/events.module"
+import { EventsModule } from "./modules/events/events.module"
 
 @Module({
   imports: [

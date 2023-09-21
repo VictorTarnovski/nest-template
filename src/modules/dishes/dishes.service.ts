@@ -4,6 +4,7 @@ import { Repository } from "typeorm"
 import { Dish as DishEntity } from "./entities/dish.entity"
 import { DishIngredient as DishIngredientEntity } from "./entities/dish-ingredient.entity"
 import { CreateDishtDto } from "./dto/create-dish.dto"
+import { EventsGateway } from "../events/events.gateway"
 
 @Injectable()
 export class DishesService {
@@ -12,6 +13,7 @@ export class DishesService {
     private readonly dishesRepository: Repository<DishEntity>,
     @InjectRepository(DishIngredientEntity)
     private readonly dishIngredientsRepository: Repository<DishIngredientEntity>,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   async create(createDishtDto: CreateDishtDto) {
@@ -43,14 +45,13 @@ export class DishesService {
         dishIngredients: true,
       },
     })
+    this.eventsGateway.sendNewResourceMessage("dish", dish)
     return dish
   }
 
   async findOne(id: string) {
     return await this.dishesRepository.findOne({
-      where: {
-        id,
-      },
+      where: { id },
       relations: {
         dishIngredients: true,
       },
