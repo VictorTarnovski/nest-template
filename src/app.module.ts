@@ -12,6 +12,7 @@ import { Table } from "./modules/tables/entities/table.entity"
 import { OrderModule } from "./modules/orders/order.module"
 import { Order } from "./modules/orders/entities/order.entity"
 import { OrderDish } from "./modules/orders/entities/order-dish.entity"
+import { EventsModule } from "./modules/events/events.module"
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { OrderDish } from "./modules/orders/entities/order-dish.entity"
     IngredientsModule,
     TableModule,
     OrderModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

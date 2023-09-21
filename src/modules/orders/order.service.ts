@@ -6,6 +6,7 @@ import { UpdateOrderDto } from "./dto/update-order.dto"
 import { Order } from "./entities/order.entity"
 import { Table } from "../tables/entities/table.entity"
 import { OrderDish } from "./entities/order-dish.entity"
+import { EventsGateway } from "../events/events.gateway"
 
 export enum OrderStatus {
   PENDING = "PENDING",
@@ -22,6 +23,7 @@ export class OrderService {
     private readonly tableRepository: Repository<Table>,
     @InjectRepository(OrderDish)
     private readonly orderDishesRepository: Repository<OrderDish>,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
@@ -45,7 +47,8 @@ export class OrderService {
 
     await this.orderDishesRepository.save(dishesToInsert)
 
-    const completeOrder = this.findOne(order.id)
+    const completeOrder = await this.findOne(order.id)
+    this.eventsGateway.sendNewResourceMessage("order", completeOrder)
     return completeOrder
   }
 

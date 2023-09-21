@@ -9,10 +9,11 @@ export class IngredientsController {
   @Post()
   async create(@Body() createIngredientDto: CreateIngredientDto) {
     const { name, quantity } = createIngredientDto
-    return this.ingredientsService.create({
+    const ingredient = await this.ingredientsService.create({
       name,
       quantity: quantity ? quantity : 0,
     })
+    return ingredient
   }
 
   @Get()
