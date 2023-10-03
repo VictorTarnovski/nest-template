@@ -63,11 +63,19 @@ export class DishesService {
   }
 
   async findAll() {
-    return this.dishesRepository.find({
-      loadRelationIds: {
-        relations: ["dishIngredients"],
+    const dishes = await this.dishesRepository.find({
+      relations: {
+        dishIngredients: {
+          ingredient: true,
+        },
       },
     })
+    for (let i = 0; i < dishes.length; i++) {
+      dishes[i].dishIngredients = this.formatDishIngredients(
+        dishes[i].dishIngredients,
+      )
+    }
+    return dishes
   }
 
   formatDishIngredients(dishIngredients: DishIngredientEntity[]) {
