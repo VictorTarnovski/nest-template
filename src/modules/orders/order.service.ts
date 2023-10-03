@@ -24,7 +24,7 @@ export class OrderService {
     @InjectRepository(OrderDish)
     private readonly orderDishesRepository: Repository<OrderDish>,
     private readonly eventsGateway: EventsGateway,
-  ) { }
+  ) {}
 
   async create(createOrderDto: CreateOrderDto) {
     const { tableId, dishes: dishesFromDto } = createOrderDto
@@ -67,7 +67,9 @@ export class OrderService {
       where: { id },
       relations: { table: true, orderDishes: { dish: true } },
     })
-    order.orderDishes ? order.orderDishes = this.formatOrderDishes(order.orderDishes) : order.orderDishes = []
+    order.orderDishes
+      ? (order.orderDishes = this.formatOrderDishes(order.orderDishes))
+      : (order.orderDishes = [])
     return order
   }
 
