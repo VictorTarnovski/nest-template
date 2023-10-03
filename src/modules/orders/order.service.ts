@@ -24,7 +24,7 @@ export class OrderService {
     @InjectRepository(OrderDish)
     private readonly orderDishesRepository: Repository<OrderDish>,
     private readonly eventsGateway: EventsGateway,
-  ) {}
+  ) { }
 
   async create(createOrderDto: CreateOrderDto) {
     const { tableId, dishes: dishesFromDto } = createOrderDto
@@ -53,16 +53,22 @@ export class OrderService {
   }
 
   async findAll() {
-    return await this.orderRepository.find({
-      relations: { orderDishes: true },
+    const orders = await this.orderRepository.find({
+      relations: { table: true, orderDishes: { dish: true } },
     })
+    for (let i = 0; i < orders.length; i++) {
+      orders[i].orderDishes = this.formatOrderDishes(orders[i].orderDishes)
+    }
+    return orders
   }
 
   async findOne(id: string) {
-    return await this.orderRepository.findOne({
+    const order = await this.orderRepository.findOneOrFail({
       where: { id },
-      relations: { orderDishes: true },
+      relations: { table: true, orderDishes: { dish: true } },
     })
+    order.orderDishes ? order.orderDishes = this.formatOrderDishes(order.orderDishes) : order.orderDishes = []
+    return order
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto) {
@@ -71,5 +77,14 @@ export class OrderService {
 
   async remove(id: string) {
     return await this.orderRepository.delete(id)
+  }
+
+  formatOrderDishes(orderDishes: OrderDish[]) {
+    const dishes = []
+    for (const orderDish of orderDishes) {
+      const { id, dish, quantityPerOrder } = orderDish
+      dishes.push({ id, dish, quantityPerOrder })
+    }
+    return dishes
   }
 }
