@@ -14,7 +14,7 @@ export class DishesService {
     @InjectRepository(DishIngredientEntity)
     private readonly dishIngredientsRepository: Repository<DishIngredientEntity>,
     private readonly eventsGateway: EventsGateway,
-  ) { }
+  ) {}
 
   async create(createDishtDto: CreateDishtDto) {
     const {
@@ -43,30 +43,44 @@ export class DishesService {
   }
 
   async findOne(dishId: string) {
-    const { id, name, price, dishIngredients } = await this.dishesRepository.findOne({
-      where: {
-        id: dishId,
-      },
-      relations: {
-        dishIngredients: {
-          ingredient: true
+    const { id, name, price, dishIngredients } =
+      await this.dishesRepository.findOne({
+        where: {
+          id: dishId,
         },
-      }
-    })
-    return { id, name, price, dishIngredients: this.formatDishIngredients(dishIngredients)  }
+        relations: {
+          dishIngredients: {
+            ingredient: true,
+          },
+        },
+      })
+    return {
+      id,
+      name,
+      price,
+      dishIngredients: this.formatDishIngredients(dishIngredients),
+    }
   }
 
   async findAll() {
-  return this.dishesRepository.find({
-    loadRelationIds: {
-      relations: ["dishIngredients"]
+    const dishes = await this.dishesRepository.find({
+      relations: {
+        dishIngredients: {
+          ingredient: true,
+        },
+      },
+    })
+    for (let i = 0; i < dishes.length; i++) {
+      dishes[i].dishIngredients = this.formatDishIngredients(
+        dishes[i].dishIngredients,
+      )
     }
-  })
+    return dishes
   }
 
   formatDishIngredients(dishIngredients: DishIngredientEntity[]) {
     const ingredients = []
-    for(const dishIngredient of dishIngredients) {
+    for (const dishIngredient of dishIngredients) {
       const { id, ingredient, quantityPerDish } = dishIngredient
       ingredients.push({ id, ingredient, quantityPerDish })
     }
